@@ -6,21 +6,21 @@
 
 ## Overview
 
-This project implements a **Built-In Self-Test (BIST)** architecture for a **4-bit Arithmetic Logic Unit (ALU)** using **Verilog HDL**. The BIST system automatically generates test patterns, applies them to the ALU, compresses the output responses into a signature, and compares the generated signature against a known reference signature to determine whether the ALU is functioning correctly.
+This project implements a **Built-In Self-Test (BIST)** architecture for a **4-bit Arithmetic Logic Unit (ALU)** using **Verilog HDL**. The BIST system automatically generates pseudo-random test vectors, applies them to the ALU, compresses the output responses into a compact signature, and compares the generated signature with a reference signature to determine whether the ALU is functioning correctly.
 
-The design demonstrates the complete BIST flow, including **pseudo-random test generation, response compaction, fault detection, and signature aliasing**.
+The project demonstrates the complete BIST flow including **pseudo-random test generation, response compaction, fault detection, and signature aliasing**.
 
 ---
 
-## Project Highlights
+# Project Highlights
 
-- Designed a 4-bit ALU supporting multiple arithmetic and logical operations.
-- Implemented an **8-bit LFSR** for pseudo-random test pattern generation.
-- Designed a **5-bit MISR** for response compaction.
-- Developed an **FSM-based BIST Controller** to automate the testing sequence.
+- Designed a modular **4-bit ALU** supporting **ADD, SUB, AND, and OR** operations.
+- Implemented an **8-bit Linear Feedback Shift Register (LFSR)** for pseudo-random test vector generation.
+- Designed a **5-bit Multiple Input Signature Register (MISR)** for response compaction.
+- Developed an **FSM-based BIST controller** to automate the testing sequence.
 - Implemented automatic **PASS/FAIL** detection using signature comparison.
 - Demonstrated **fault detection** by intentionally modifying the ALU logic.
-- Demonstrated the concept of **signature aliasing** in MISR-based BIST.
+- Demonstrated **signature aliasing**, a known limitation of MISR-based BIST.
 - Verified the complete design using **Xilinx Vivado Simulator**.
 
 ---
@@ -28,7 +28,7 @@ The design demonstrates the complete BIST flow, including **pseudo-random test g
 # BIST Architecture
 
 <p align="center">
-<img src="screenshots/architecture.png" width="700">
+<img src="screenshots/architecture.png" width="650">
 </p>
 
 ---
@@ -36,14 +36,14 @@ The design demonstrates the complete BIST flow, including **pseudo-random test g
 # Data Flow
 
 <p align="center">
-<img src="screenshots/dataflow.png" width="350">
+<img src="screenshots/dataflow.png" width="320">
 </p>
 
 ---
 
 # Project Structure
 
-```
+```text
 BIST-ALU-SELF-TEST
 │
 ├── rtl
@@ -69,7 +69,7 @@ BIST-ALU-SELF-TEST
 │   └── aliased_fault.png
 │
 ├── report
-│   └── BIST_Report.pdf
+│   └── BIST_ALU_Report.pdf
 │
 ├── README.md
 └── .gitignore
@@ -80,19 +80,33 @@ BIST-ALU-SELF-TEST
 # Design Modules
 
 ### ALU
-Implements arithmetic and logical operations on two 4-bit operands.
+Implements four 4-bit arithmetic and logical operations:
+- Addition
+- Subtraction
+- Bitwise AND
+- Bitwise OR
 
 ### LFSR
-Generates pseudo-random input test vectors for the ALU.
+Generates pseudo-random input vectors for testing the ALU.
 
 ### FSM Controller
-Controls the BIST sequence by coordinating test generation, signature collection, and result evaluation.
+Sequences the BIST process through the ADD, SUB, AND, and OR test phases before completing the self-test.
 
 ### MISR
-Compresses ALU outputs into a 5-bit signature using response compaction.
+Compresses the ALU outputs into a 5-bit signature using response compaction.
 
 ### Comparator
-Compares the generated MISR signature with the expected reference signature and generates the PASS/FAIL signal.
+Compares the generated MISR signature with the expected reference signature and generates the **PASS/FAIL** signal.
+
+---
+
+# Test Summary
+
+| Test Case | Expected Result | Outcome |
+|-----------|-----------------|---------|
+| Correct ALU | PASS | ✅ PASS |
+| Injected Fault | FAIL | ✅ Fault Detected |
+| Signature Aliasing | PASS (Aliasing) | ✅ Demonstrated |
 
 ---
 
@@ -105,33 +119,33 @@ The generated MISR signature matches the expected reference signature, indicatin
 **PASS = 1**
 
 <p align="center">
-<img src="screenshots/correct_output.png" width="900">
+<img src="screenshots/correct_output.png" width="700">
 </p>
 
 ---
 
 ## Fault Detection
 
-A fault was intentionally introduced into the ALU implementation. The resulting MISR signature differs from the expected signature, and the comparator correctly reports:
+A fault was intentionally introduced into the ALU implementation by modifying one of the logic operations. The generated MISR signature no longer matches the expected reference signature, and the comparator correctly reports:
 
 **PASS = 0**
 
 <p align="center">
-<img src="screenshots/induced_fault.png" width="900">
+<img src="screenshots/induced_fault.png" width="700">
 </p>
 
 ---
 
 ## Signature Aliasing
 
-This project also demonstrates **signature aliasing**, where a faulty ALU implementation produces the same compressed MISR signature as the fault-free implementation. Although the ALU contains an error, the comparator reports:
+This project also demonstrates **signature aliasing**, where a faulty ALU implementation produces the same compressed MISR signature as the fault-free implementation. As a result, the comparator incorrectly reports:
 
 **PASS = 1**
 
-This illustrates one of the known limitations of MISR-based Built-In Self-Test architectures.
+This illustrates a well-known limitation of MISR-based Built-In Self-Test architectures.
 
 <p align="center">
-<img src="screenshots/aliased_fault.png" width="900">
+<img src="screenshots/aliased_fault.png" width="700">
 </p>
 
 ---
@@ -144,26 +158,27 @@ This illustrates one of the known limitations of MISR-based Built-In Self-Test a
 
 ---
 
-# Key Concepts
+# Concepts Demonstrated
 
 - Built-In Self-Test (BIST)
-- Finite State Machine (FSM)
 - Linear Feedback Shift Register (LFSR)
 - Multiple Input Signature Register (MISR)
+- Finite State Machine (FSM)
 - Signature Analysis
 - Fault Detection
 - Signature Aliasing
+- RTL Design
 - Digital Circuit Verification
 
 ---
 
 # Future Improvements
 
-- Support larger ALU architectures (8-bit / 16-bit).
+- Extend the design to support **8-bit and 16-bit ALUs**.
 - Reduce aliasing probability using larger MISRs.
 - Generate reference signatures automatically.
 - Implement the design on an FPGA development board.
-- Extend the framework to support additional digital modules.
+- Add support for additional ALU operations.
 
 ---
 
