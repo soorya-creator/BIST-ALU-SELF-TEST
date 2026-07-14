@@ -184,7 +184,7 @@ This illustrates a well-known limitation of MISR-based Built-In Self-Test archit
 
 # Author
 
-**Sooryanarayan S**
+**Soorya Narayan S**
 
 B.Tech in Electronics and Communication Engineering
 
