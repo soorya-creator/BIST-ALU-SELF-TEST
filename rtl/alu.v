@@ -31,7 +31,7 @@ always @(*) begin
 case(opcode)
     2'b00:  {carry_borrow,result}=a+b;
     2'b01: {carry_borrow,result}=a-b;
-    2'b10: begin result=a^b;carry_borrow=0;end
+    2'b10: begin result=a&b;carry_borrow=0;end
     2'b11: begin result=a|b;carry_borrow=0;end
     default: begin result = 4'b0000;carry_borrow = 0; end
 endcase
