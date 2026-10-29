@@ -27,13 +27,14 @@ module lfsr(
     output reg [7:0] lfsr_out
     );
     wire feedback;
+    // x^8+x^6+x^5+x^4+1 (maximal length, period 255), left-shift Fibonacci form
     assign feedback=lfsr_out[7]^lfsr_out[5]^lfsr_out[4]^lfsr_out[3];
     always@(posedge clk or posedge rst)
     begin
     if(rst)
     lfsr_out<=8'b10101100 ;
     else if(en)
-    lfsr_out<={feedback,lfsr_out[7:1]};
+    lfsr_out<={lfsr_out[6:0],feedback};
     end
     
 endmodule
