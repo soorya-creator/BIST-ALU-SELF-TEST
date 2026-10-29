@@ -47,7 +47,7 @@ module FSM(
  opcode<=2'b00;
  if (count==NUM_VECTORS-1)begin
  count<=8'b0;
- state<=SUB_TEST;
+ state<=SUB_TEST; opcode<=2'b01;
  end
  else  count<=count+1; 
  end
@@ -55,7 +55,7 @@ module FSM(
  opcode<=2'b01;
  if (count==NUM_VECTORS-1)begin
  count<=8'b0;
- state<=AND_TEST;
+ state<=AND_TEST; opcode<=2'b10;
  end
  else  count<=count+1; 
  end
@@ -63,7 +63,7 @@ module FSM(
  opcode<=2'b10;
  if (count==NUM_VECTORS-1)begin
  count<=8'b0;
- state<=OR_TEST;
+ state<=OR_TEST; opcode<=2'b11;
  end
  else  count<=count+1;
  end 
