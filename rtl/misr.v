@@ -32,7 +32,7 @@ module misr(
     signature<=5'b00000;
     else if(en) begin
     signature[4]<=signature[0]^alu_out[4];
-    signature[3]<=signature[4]^^alu_out[3];
+    signature[3]<=signature[4]^alu_out[3];
     signature[2] <= signature[3] ^ alu_out[2];
     signature[1] <= signature[2] ^ alu_out[1];
     signature[0] <= signature[1] ^ alu_out[0];
