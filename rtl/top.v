@@ -27,7 +27,7 @@ module top(
     output pass,
     output [4:0] signature
     );
-    parameter [4:0] golden_signature = 5'b01100;
+    parameter [4:0] golden_signature = 5'b11011;
     wire [7:0]lfsr_out;
     wire [1:0] opcode;
     wire [4:0]alu_out;
@@ -35,6 +35,7 @@ module top(
     wire carry_borrow;
     wire done;
     wire misr_en;
+    wire test_en;
     assign alu_out={carry_borrow,result};
     assign test_en = en && !done;
     //lfsr
@@ -70,9 +71,13 @@ module top(
     .signature(signature)
 );
     //comparator
-    comparator c1(
+wire signature_match;
+
+comparator c1(
     .signature(signature),
     .golden_signature(golden_signature),
-    .pass(pass)
+    .pass(signature_match)
 );
+
+assign pass = done && signature_match;
 endmodule
